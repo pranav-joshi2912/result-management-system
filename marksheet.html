@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Statement of Marks</title>
+
+<style>
+body{
+    font-family: Arial;
+    background:#f2f2f2;
+}
+.container{
+    width:900px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border:3px solid black;
+}
+h2,h3{
+    text-align:center;
+    margin:5px;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+th,td{
+    border:1px solid black;
+    padding:6px;
+    font-size:14px;
+}
+.pass{color:green;font-weight:bold;}
+.fail{color:red;font-weight:bold;}
+.search{
+    text-align:center;
+    margin:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="search">
+<input type="text" id="enroll" placeholder="Enter Enrollment No">
+<button onclick="showMarksheet()">Search</button>
+</div>
+
+<div id="result"></div>
+
+<script>
+
+let students = [
+
+{
+enroll:"25CO01",
+name:"Rahul Patil",
+semester:"FIRST",
+exam:"WINTER-2025",
+subjects:[
+{title:"BASIC MATHEMATICS",total:100,obt:68},
+{title:"BASIC SCIENCE",total:100,obt:75},
+{title:"COMMUNICATION SKILLS",total:100,obt:60},
+{title:"ENGINEERING GRAPHICS",total:100,obt:55},
+{title:"ICT",total:100,obt:70}
+]
+},
+
+{
+enroll:"25CO02",
+name:"Amit Shinde",
+semester:"FIRST",
+exam:"WINTER-2025",
+subjects:[
+{title:"BASIC MATHEMATICS",total:100,obt:40},
+{title:"BASIC SCIENCE",total:100,obt:45},
+{title:"COMMUNICATION SKILLS",total:100,obt:50},
+{title:"ENGINEERING GRAPHICS",total:100,obt:42},
+{title:"ICT",total:100,obt:48}
+]
+},
+
+{
+enroll:"25CO03",
+name:"Sanket More",
+semester:"FIRST",
+exam:"WINTER-2025",
+subjects:[
+{title:"BASIC MATHEMATICS",total:100,obt:85},
+{title:"BASIC SCIENCE",total:100,obt:80},
+{title:"COMMUNICATION SKILLS",total:100,obt:75},
+{title:"ENGINEERING GRAPHICS",total:100,obt:70},
+{title:"ICT",total:100,obt:90}
+]
+},
+
+{
+enroll:"25CO04",
+name:"Rohit Kale",
+semester:"FIRST",
+exam:"WINTER-2025",
+subjects:[
+{title:"BASIC MATHEMATICS",total:100,obt:30},
+{title:"BASIC SCIENCE",total:100,obt:35},
+{title:"COMMUNICATION SKILLS",total:100,obt:28},
+{title:"ENGINEERING GRAPHICS",total:100,obt:40},
+{title:"ICT",total:100,obt:32}
+]
+},
+
+{
+enroll:"25CO05",
+name:"Om Pawar",
+semester:"FIRST",
+exam:"WINTER-2025",
+subjects:[
+{title:"BASIC MATHEMATICS",total:100,obt:60},
+{title:"BASIC SCIENCE",total:100,obt:55},
+{title:"COMMUNICATION SKILLS",total:100,obt:65},
+{title:"ENGINEERING GRAPHICS",total:100,obt:58},
+{title:"ICT",total:100,obt:62}
+]
+},
+
+{
+enroll:"25CO06",
+name:"Nikhil Jadhav",
+semester:"FIRST",
+exam:"WINTER-2025",
+subjects:[
+{title:"BASIC MATHEMATICS",total:100,obt:45},
+{title:"BASIC SCIENCE",total:100,obt:50},
+{title:"COMMUNICATION SKILLS",total:100,obt:48},
+{title:"ENGINEERING GRAPHICS",total:100,obt:52},
+{title:"ICT",total:100,obt:47}
+]
+},
+
+{
+enroll:"25CO07",
+name:"Pratik Deshmukh",
+semester:"FIRST",
+exam:"WINTER-2025",
+subjects:[
+{title:"BASIC MATHEMATICS",total:100,obt:92},
+{title:"BASIC SCIENCE",total:100,obt:88},
+{title:"COMMUNICATION SKILLS",total:100,obt:85},
+{title:"ENGINEERING GRAPHICS",total:100,obt:90},
+{title:"ICT",total:100,obt:95}
+]
+},
+
+{
+enroll:"25CO08",
+name:"Kunal Patil",
+semester:"FIRST",
+exam:"WINTER-2025",
+subjects:[
+{title:"BASIC MATHEMATICS",total:100,obt:25},
+{title:"BASIC SCIENCE",total:100,obt:30},
+{title:"COMMUNICATION SKILLS",total:100,obt:35},
+{title:"ENGINEERING GRAPHICS",total:100,obt:20},
+{title:"ICT",total:100,obt:28}
+]
+},
+
+{
+enroll:"25CO09",
+name:"Tejas Shinde",
+semester:"FIRST",
+exam:"WINTER-2025",
+subjects:[
+{title:"BASIC MATHEMATICS",total:100,obt:70},
+{title:"BASIC SCIENCE",total:100,obt:65},
+{title:"COMMUNICATION SKILLS",total:100,obt:72},
+{title:"ENGINEERING GRAPHICS",total:100,obt:68},
+{title:"ICT",total:100,obt:75}
+]
+},
+
+{
+enroll:"25CO10",
+name:"Ajay More",
+semester:"FIRST",
+exam:"WINTER-2025",
+subjects:[
+{title:"BASIC MATHEMATICS",total:100,obt:38},
+{title:"BASIC SCIENCE",total:100,obt:42},
+{title:"COMMUNICATION SKILLS",total:100,obt:36},
+{title:"ENGINEERING GRAPHICS",total:100,obt:40},
+{title:"ICT",total:100,obt:39}
+]
+}
+
+];
+
+function showMarksheet(){
+
+let num = document.getElementById("enroll").value.trim().toUpperCase();
+let s = students.find(stu => stu.enroll === num);
+
+if(s){
+
+let totalMarks = 0;
+let maxMarks = 0;
+let rows = "";
+
+s.subjects.forEach(sub=>{
+totalMarks += sub.obt;
+maxMarks += sub.total;
+rows += `<tr>
+<td>${sub.title}</td>
+<td>${sub.total}</td>
+<td>${sub.obt}</td>
+</tr>`;
+});
+
+let percent = (totalMarks/maxMarks*100).toFixed(2);
+let result = (percent>=40) ? "PASS" : "FAIL";
+let cls = (result=="PASS") ? "pass" : "fail";
+
+document.getElementById("result").innerHTML = `
+<div class="container">
+
+<h2>Gramin Technical and Management Campus, Nanded</h2>
+<h3>STATEMENT OF MARKS</h3>
+
+<p><b>Name:</b> ${s.name}</p>
+<p><b>Enrollment No:</b> ${s.enroll}</p>
+<p><b>Examination:</b> ${s.exam}</p>
+<p><b>Semester:</b> ${s.semester}</p>
+
+<table>
+<tr>
+<th>Course Title</th>
+<th>Max Marks</th>
+<th>Marks Obtained</th>
+</tr>
+
+${rows}
+
+<tr>
+<th>Total</th>
+<th>${maxMarks}</th>
+<th>${totalMarks}</th>
+</tr>
+
+<tr>
+<th colspan="2">Percentage</th>
+<th>${percent}%</th>
+</tr>
+
+<tr>
+<th colspan="2">Result</th>
+<th class="${cls}">${result}</th>
+</tr>
+
+</table>
+
+</div>
+`;
+
+}else{
+document.getElementById("result").innerHTML="<h2 style='text-align:center'>Student Not Found</h2>";
+}
+
+}
+
+</script>
+
+</body>
+</html>
